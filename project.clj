@@ -5,4 +5,6 @@
 
   :source-path "src/clojure"
   :resources-path "src/resource"
-  :java-source-path [["src/java"]])
+  :java-source-path [["src/java"]]
+  
+  :aot [clj-exchange.ews])
