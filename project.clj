@@ -1,6 +1,8 @@
 (defproject clj-exchange "1.0.0-SNAPSHOT"
   :description "Utility for Exchange Web Service Access"
   :dependencies [[org.clojure/clojure "1.3.0"]
+                 [org.clojure/data.json "0.1.1"]
+                 [org.codehaus.jackson/jackson-xc "1.9.3"]
                  [joda-time/joda-time "2.0"]]
 
   :source-path "src/clojure"
