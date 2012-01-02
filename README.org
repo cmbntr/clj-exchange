@@ -1,0 +1,13 @@
+#+Title:        clj-exchange
+#+AUTHOR:       Michael Locher
+#+EMAIL:        cmbntr@gmail.com
+
+* About
+  
+  Accessing Exchange Web Services from Clojure.
+
+* License
+
+Copyright (C) 2011 Michael Locher
+
+Distributed under the Eclipse Public License, the same as Clojure.
