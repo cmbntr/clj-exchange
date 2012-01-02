@@ -1,4 +1,5 @@
 (ns clj-exchange.ews
+  (:use clj-exchange.prefs)
   (:import [javax.xml.namespace QName]
            [javax.xml.ws Service Holder BindingProvider]
            [com.microsoft.schemas.exchange.services._2006.messages ExchangeServicePortType])
@@ -8,14 +9,18 @@
 (def svc-name  (QName/valueOf "{http://schemas.microsoft.com/exchange/services/2006/messages}ExchangeWebService"))
 (def port-name (QName/valueOf "{http://schemas.microsoft.com/exchange/services/2006/messages}ExchangeWebPort") )
 
-(defn ews [endpoint username password]
-  (let [port (-> (Service/create wsdl-location svc-name)
-                 (.getPort port-name ExchangeServicePortType))]
-    (doto (.getRequestContext port)
-      (.put BindingProvider/ENDPOINT_ADDRESS_PROPERTY endpoint)
-      (.put BindingProvider/USERNAME_PROPERTY username)
-      (.put BindingProvider/PASSWORD_PROPERTY password))
-    port))
+(defn ews
+  ([] (let [{:keys [ews-port username password]} (get-exchange-prefs)]
+        (ews ews-port username (rot13 password))))
+  
+  ([endpoint username password]
+      (let [port (-> (Service/create wsdl-location svc-name)
+                     (.getPort port-name ExchangeServicePortType))]
+        (doto (.getRequestContext port)
+          (.put BindingProvider/ENDPOINT_ADDRESS_PROPERTY endpoint)
+          (.put BindingProvider/USERNAME_PROPERTY username)
+          (.put BindingProvider/PASSWORD_PROPERTY password))
+        port)))
 
 ;; define stub functions
 
@@ -38,7 +43,7 @@
         d (str "ex-" (camel-to-dash n))
         port (symbol "port")
         req  (symbol "req")]
-    `(defn ~(symbol d) [~port ~req]
+    `(defn ~(symbol d) [~req ~port]
        (let [out# (box)]
          (. ~port ~s ~req out# (box))
          (unbox out#)))))
