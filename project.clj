@@ -5,6 +5,9 @@
                  [org.codehaus.jackson/jackson-xc "1.9.3"]
                  [joda-time/joda-time "2.0"]]
 
+  :dev-dependencies [[midje "1.3.1"]
+                     [lein-marginalia "0.6.1"]]
+  
   :source-path "src/clojure"
   :resources-path "src/resource"
   :java-source-path [["src/java"]]
