@@ -9,4 +9,6 @@
   :resources-path "src/resource"
   :java-source-path [["src/java"]]
   
-  :aot [clj-exchange.ews])
+  :aot [clj-exchange.core clj-exchange.ews clj-exchange.prefs]
+  :main clj-exchange.core)
+
