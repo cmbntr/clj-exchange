@@ -46,15 +46,17 @@
                                 [{:DistinguishedFolderId {:Id "tasks"}}]}})
       (ex-find-item svc)))
 
-(defn calendar-items [svc start end]
-  (-> (build FindItemType
-             {:Traversal "Shallow"
-              :ItemShape {:BaseShape "AllProperties"}
-              :CalendarView {:StartDate (time-millis start)
-                             :EndDate (time-millis end)}
-              :ParentFolderIds {:folderIdOrDistinguishedFolderId
-                                [{:DistinguishedFolderId {:Id "calendar"}}]}})
-      (ex-find-item svc)))
+(defn calendar-items
+  ([svc start end]
+     (calendar-items svc start end nil))
+  ([svc start end mbox]
+     (let [f {:DistinguishedFolderId (into {:Id "calendar"} (if mbox {:Mailbox {:EmailAddress  mbox}}))}]
+       (-> (build FindItemType
+                  {:Traversal "Shallow"
+                   :ItemShape {:BaseShape "AllProperties"}
+                   :CalendarView {:StartDate (time-millis start) :EndDate (time-millis end)}
+                   :ParentFolderIds {:folderIdOrDistinguishedFolderId [f]}})
+           (ex-find-item svc)))))
 
 ;; examples
 
@@ -75,15 +77,10 @@
               seq
               )))
 
-(defn -main [& [from to]]
-  (let [c (calendar-items svc from to)]
-    (doseq [i (-> (parse-response c)
-                  :ResponseMessages
-                  :createItemResponseMessageOrDeleteItemResponseMessageOrGetItemResponseMessage
-                  first
-                  :JAXBElement :value
-                  :RootFolder :Items :itemOrMessageOrCalendarItem
-                  )]
-      (println i))))
+(defn -main [& [from to & [mbox]]]
+  (doseq [i (-> (calendar-items svc from to mbox)
+                parse-response-flat
+                :RootFolder :Items :itemOrMessageOrCalendarItem)]
+    (println i \newline)))
 
 
