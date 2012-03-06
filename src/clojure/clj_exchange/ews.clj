@@ -12,7 +12,7 @@
 (defn ews
   ([] (let [{:keys [ews-port username password]} (get-exchange-prefs)]
         (ews ews-port username (rot13 password))))
-  
+
   ([endpoint username password]
       (let [port (-> (Service/create wsdl-location svc-name)
                      (.getPort port-name ExchangeServicePortType))]
