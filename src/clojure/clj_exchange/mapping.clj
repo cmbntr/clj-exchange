@@ -1,5 +1,5 @@
 (ns clj-exchange.mapping
-  (:use clojure.data.json))
+  (:require [clojure.data.json :as json]))
 
 (defn- jackson-mapper []
   (let [m (org.codehaus.jackson.map.ObjectMapper.)
@@ -19,9 +19,9 @@
   (.readValue mapper s target))
 
 (defn parse-response [r]
-  (-> r to-json-with-jackson read-json))
+  (-> r to-json-with-jackson json/read-json))
 
 (defn build [target x]
-  (-> x json-str (to-value-with-jackson target)))
+  (-> x json/json-str (to-value-with-jackson target)))
 
 
