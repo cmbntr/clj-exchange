@@ -14,7 +14,7 @@ External:
 ** Versions
    | Version |   Released | Docs       |
    |   0.0.1 | 2012-01-02 | [[http://cmbntr.github.com/clj-exchange/marginalia/v0.0.1/uberdoc.html][Marginalia]] |
-   
+   |   0.0.2 | 2014-01-26 | [[http://cmbntr.github.com/clj-exchange/marginalia/v0.0.2/uberdoc.html][Marginalia]] |
   
 ** Usage
 
@@ -58,7 +58,7 @@ Note: Some endpoint deployments could be case sensitive (e.g. /EWS/Exchange.asmx
 with leinigen
 
 #+BEGIN_SRC clojure
-[clj-exchange "0.0.1"]
+[clj-exchange "0.0.2"]
 #+END_SRC
 
 with maven
@@ -67,7 +67,7 @@ with maven
 <dependency>
   <groupId>clj-exchange</groupId>
   <artifactId>clj-exchange</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
 </dependency>
 #+END_SRC
 
@@ -75,6 +75,6 @@ with maven
 
 * License
 
-Copyright (C) 2011 Michael Locher
+Copyright (C) 2011, 2014 Michael Locher
 
 Distributed under the Eclipse Public License, the same as Clojure.
