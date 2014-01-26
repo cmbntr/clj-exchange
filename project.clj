@@ -1,4 +1,4 @@
-(defproject clj-exchange "0.0.2-SNAPSHOT"
+(defproject clj-exchange "0.0.2"
   :min-lein-version "2.0.0"
 
   :description "Utility for Exchange Web Service Access"
