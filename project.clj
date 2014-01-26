@@ -1,6 +1,16 @@
-(defproject clj-exchange "1.0.0-SNAPSHOT"
+(defproject clj-exchange "0.0.2-SNAPSHOT"
+  :min-lein-version "2.0.0"
+
   :description "Utility for Exchange Web Service Access"
   :url "https://github.com/cmbntr/clj-exchange"
+  :scm {:url "git@github.com:cmbntr/clj-exchange.git"}
+  :pom-addition [:developers [:developer
+                              [:name "Michael Locher"]
+                              [:email "cmbntr@gmail.com"]
+                              [:timezone "1"]]]
+  :license {:name "Eclipse Public License"
+            :url "http://www.eclipse.org/legal/epl-v10.html"}
+
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/data.json "0.2.4"]
                  [org.codehaus.jackson/jackson-xc "1.9.11"]
