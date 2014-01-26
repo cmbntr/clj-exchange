@@ -1,13 +1,80 @@
-#+Title:        clj-exchange
+#+Title:        clj-exchange: Accessing Exchange Web Services from Clojure
 #+AUTHOR:       Michael Locher
 #+EMAIL:        cmbntr@gmail.com
 
-* About
+* Accessing Exchange Web Services from Clojure
+
+- [[http://cmbntr.github.com/clj-exchange/][Github Page]]
+- [[http://clojars.org/clj-exchange][Clojars]]
+
+External:
+- [[http://msdn.microsoft.com/en-us/library/bb409286(v=exchg.140).aspx][Microsoft Reference: Exchange Web Services Operations, Exchange Server 2010]]
+
+
+** Versions
+   | Version |   Released | Docs       |
+   |   0.0.1 | 2012-01-02 | [[http://cmbntr.github.com/clj-exchange/marginalia/v0.0.1/uberdoc.html][Marginalia]] |
+   |   0.0.2 | 2014-01-26 | [[http://cmbntr.github.com/clj-exchange/marginalia/v0.0.2/uberdoc.html][Marginalia]] |
   
-  Accessing Exchange Web Services from Clojure.
+** Usage
+
+#+BEGIN_EXAMPLE
+(ns example
+  (:gen-class)
+  (:use [clj-exchange ews mapping time])
+  (:import [com.microsoft.schemas.exchange.services._2006.messages FindItemType]))
+
+(defn calendar-items [svc start end]
+  (-> (build FindItemType
+             {:Traversal "Shallow"
+              :ItemShape {:BaseShape "AllProperties"}
+              :CalendarView {:StartDate (time-millis start)
+                             :EndDate (time-millis end)}
+              :ParentFolderIds {:folderIdOrDistinguishedFolderId
+                                [{:DistinguishedFolderId {:Id "calendar"}}]}})
+      (ex-find-item svc)))
+
+(defn -main [& [endpoint username pwd from to]]
+  (let [svc (ews endpoint username pwd)
+        c   (calendar-items svc from to)]
+    (doseq [i (-> (parse-response c)
+                  :ResponseMessages
+                  :createItemResponseMessageOrDeleteItemResponseMessageOrGetItemResponseMessage
+                  first
+                  :JAXBElement :value
+                  :RootFolder :Items :itemOrMessageOrCalendarItem
+                  )]
+      (println i))))
+
+
+(comment
+  (-main "https://example.com/EWS/exchange.asmx" "username" "password" "2012-01-01" "2012-01-06"))
+#+END_EXAMPLE
+
+Note: Some endpoint deployments could be case sensitive (e.g. /EWS/Exchange.asmx).
+
+** Dependencies
+
+with leinigen
+
+#+BEGIN_SRC clojure
+[clj-exchange "0.0.2"]
+#+END_SRC
+
+with maven
+
+#+BEGIN_SRC xml
+<dependency>
+  <groupId>clj-exchange</groupId>
+  <artifactId>clj-exchange</artifactId>
+  <version>0.0.2</version>
+</dependency>
+#+END_SRC
+
+
 
 * License
 
-Copyright (C) 2011 Michael Locher
+Copyright (C) 2011, 2014 Michael Locher
 
 Distributed under the Eclipse Public License, the same as Clojure.
